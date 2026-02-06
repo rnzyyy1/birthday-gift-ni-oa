@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Happy Birthday 💖</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- 🎵 Background Music -->
+<audio id="bgMusic" loop>
+  <source src="Happy Birthday (Korean Version).mp3" type="audio/mpeg">
+</audio>
+
+<div class="card">
+  <button class="music-btn" onclick="toggleMusic()">🎵 Music</button>
+
+  <h1 id="title">Happy Birthday 💖</h1>
+  <div class="subtitle">Make a wish & tap the candle 🕯</div>
+
+  <div class="cake" id="cake" onclick="blowCandle()">
+    🎂 <span class="candle" id="candle">🕯</span>
+  </div>
+
+  <div class="message" id="message">
+    🎉 Your wish is sent to the stars ✨  
+    May love, joy, and happiness always be with you 💕
+  </div>
+
+  <div class="from" id="fromText"></div>
+</div>
+
+<script>
+const music = document.getElementById("bgMusic");
+const cake = document.getElementById("cake");
+
+// Auto-play music on first click
+window.addEventListener("click", () => {
+  music.play().catch(() => {});
+}, { once: true });
+
+function toggleMusic() {
+  if (music.paused) music.play();
+  else music.pause();
+}
+
+function blowCandle() {
+  const candle = document.getElementById("candle");
+  const message = document.getElementById("message");
+  
+  candle.innerText = "💨";
+  message.style.display = "block";
+  
+  createHearts();
+}
+
+function createHearts() {
+  const cakeRect = cake.getBoundingClientRect();
+
+  for (let i = 0; i < 25; i++) {
+    const heart = document.createElement("div");
+    heart.className = "heart";
+    heart.innerText = "💗";
+    
+    // Position hearts above the candle
+    heart.style.left = (cakeRect.left + cakeRect.width/2 + (Math.random()*60 - 30)) + "px";
+    heart.style.top = (cakeRect.top) + "px";
+    heart.style.animationDuration = (3 + Math.random()*2) + "s";
+
+    document.body.appendChild(heart);
+
+    setTimeout(() => heart.remove(), 5000);
+  }
+}
+
+// Personalization via URL params
+const params = new URLSearchParams(window.location.search);
+const name = params.get("name");
+const from = params.get("from");
+
+if (name) document.getElementById("title").innerText = `Happy Birthday ${name} 💖`;
+if (from) document.getElementById("fromText").innerText = `— With love, ${from}`;
+</script>
+
+</body>
+</html>
